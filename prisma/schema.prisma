@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Flight {
+  flightnumber        Int     @id
+  airlinecompany      String  @db.VarChar(255)
+  email               String  @unique @db.VarChar(255)
+  departuredate       String  @db.VarChar(255)
+  premium             Int
+  payout              Int
+  isdelayedorcanceled Boolean
+
+  @@map("flight")
+}

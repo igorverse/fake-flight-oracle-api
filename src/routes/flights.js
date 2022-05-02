@@ -1,45 +1,47 @@
 const express = require('express')
+const { PrismaClient } = require('@prisma/client')
+
+const prisma = new PrismaClient()
 
 const flightsRouter = express.Router()
 
-const flights = []
+flightsRouter.post('/register', async (req, res, next) => {
+  try {
+    const { flightNumber, airlineCompany, email, departureDate, premium } =
+      req.body
 
-flightsRouter.post('/register', (req, res, next) => {
-  const { flightNumber, airlineCompany, email, depatureDate, premium } =
-    req.body
+    const flight = await prisma.flight.create({
+      data: {
+        flightnumber: flightNumber,
+        airlinecompany: airlineCompany,
+        email: email,
+        departuredate: departureDate,
+        premium: premium,
+        payout: premium + premium * 0.1,
+        isdelayedorcanceled: false,
+      },
+    })
 
-  for (const flight of flights) {
-    if (flight.flightNumber === Number(flightNumber))
-      return res.status(400).send('This id already exists!')
+    return res.status(201).json(flight)
+  } catch (err) {
+    res.status(500).send('=/')
+
+    throw new Error(err)
   }
-
-  const flight = {
-    flightNumber,
-    airlineCompany,
-    email,
-    depatureDate: new Date(depatureDate),
-    premium,
-    payout: premium + premium * 0.1,
-    isDelayedOrCanceled: false,
-  }
-
-  flights.push(flight)
-
-  return res.status(201).json(flight)
 })
 
 flightsRouter.get('/', (req, res, next) => {
   return res.send(flights)
 })
 
-flightsRouter.get('/:id', (req, res, next) => {
-  const { id } = req.params
+flightsRouter.get('/:flightNumber', async (req, res, next) => {
+  const { flightNumber } = req.params
 
-  if (flights[id - 1]) {
-    return res.json(flights[id - 1])
-  } else {
-    return res.status(404).send("This id doesn't exist")
-  }
+  const flight = await prisma.flight.findUnique({
+    where: { flightnumber: Number(flightNumber) },
+  })
+
+  res.json(flight)
 })
 
 flightsRouter.patch('/:flightNumber/delayed', (req, res, next) => {
