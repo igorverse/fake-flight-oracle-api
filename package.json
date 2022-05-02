@@ -1,0 +1,29 @@
+{
+  "name": "fake-flights-oracle-api",
+  "version": "1.0.0",
+  "description": "a fake flight oracle api for a blockchain proof of concept project.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/igoreng/fake-flight-oracle-api.git"
+  },
+  "keywords": [
+    "poc",
+    "tcc",
+    "blockchain",
+    "web3",
+    "api"
+  ],
+  "author": "Igor Silva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/igoreng/fake-flight-oracle-api/issues"
+  },
+  "homepage": "https://github.com/igoreng/fake-flight-oracle-api#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
