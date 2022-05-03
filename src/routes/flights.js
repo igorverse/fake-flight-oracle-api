@@ -23,56 +23,68 @@ flightsRouter.post('/register', async (req, res, next) => {
     })
 
     return res.status(201).json(flight)
-  } catch (err) {
-    res.status(500).send('=/')
-
-    throw new Error(err)
+  } catch (error) {
+    res.status(500).send({
+      message: 'It was not possible to register a flight!',
+      error,
+    })
   }
 })
 
-flightsRouter.get('/', (req, res, next) => {
-  return res.send(flights)
+flightsRouter.get('/', async (req, res, next) => {
+  const flights = await prisma.flight.findMany()
+
+  return res.json(flights)
 })
 
 flightsRouter.get('/:flightNumber', async (req, res, next) => {
   const { flightNumber } = req.params
 
-  const flight = await prisma.flight.findUnique({
-    where: { flightnumber: Number(flightNumber) },
-  })
+  try {
+    const flight = await prisma.flight.findUnique({
+      where: { flightnumber: Number(flightNumber) },
+    })
 
-  res.json(flight)
+    return res.json(flight)
+  } catch (error) {
+    return res
+      .status(404)
+      .json({ message: "this flight number doesn't exist", error })
+  }
 })
 
-flightsRouter.patch('/:flightNumber/delayed', (req, res, next) => {
+flightsRouter.patch('/:flightNumber/delayed', async (req, res, next) => {
   const { flightNumber } = req.params
 
-  for (const flight of flights) {
-    if (flight.flightNumber === Number(flightNumber)) {
-      flight.isDelayedOrCanceled = true
-      return res.status(204).send()
-    }
-  }
-
-  return res.status(404).send("this flight number doesn't exist")
-})
-
-flightsRouter.delete('/:flightNumber', (req, res, next) => {
-  const { flightNumber } = req.params
-  let flightIndex = -1
-
-  for (const i in flights) {
-    if (flights[i].flightNumber === Number(flightNumber)) {
-      flightIndex = i
-    }
-  }
-
-  if (flightIndex !== -1) {
-    flights.splice(flightIndex, 1)
+  try {
+    const flight = await prisma.flight.update({
+      where: { flightnumber: Number(flightNumber) },
+      data: {
+        isdelayedorcanceled: true,
+      },
+    })
 
     return res.status(204).send()
-  } else {
-    return res.status(404).send("this flight number doesn't exist")
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ message: "this flight number doesn't exist", error })
+  }
+})
+
+flightsRouter.delete('/:flightNumber', async (req, res, next) => {
+  const { flightNumber } = req.params
+
+  try {
+    const flight = await prisma.flight.delete({
+      where: { flightnumber: Number(flightNumber) },
+    })
+
+    return res.status(204).send()
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ message: "this flight number doesn't exist", error })
   }
 })
 
