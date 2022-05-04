@@ -4,6 +4,7 @@
   "description": "a fake flight oracle api for a blockchain proof of concept project.",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
     "dev": "node app.js"
   },
   "repository": {
