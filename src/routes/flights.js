@@ -46,6 +46,8 @@ flightsRouter.get('/:flightNumber', async (req, res, next) => {
       where: { flightnumber: Number(flightNumber) },
     })
 
+    if (!flight) throw new Error('Not found!')
+
     return res.json(flight)
   } catch (error) {
     return res
@@ -54,7 +56,7 @@ flightsRouter.get('/:flightNumber', async (req, res, next) => {
   }
 })
 
-flightsRouter.patch('/:flightNumber/delayed', async (req, res, next) => {
+flightsRouter.patch('/:flightNumber/delayed', auth, async (req, res, next) => {
   const { flightNumber } = req.params
 
   try {
