@@ -35,11 +35,7 @@ flightsRouter.post('/register', auth, async (req, res, next) => {
 flightsRouter.get('/', async (req, res, next) => {
   const flights = await prisma.flight.findMany()
 
-  res.json(flights)
-})
-
-flightsRouter.get('/test', (req, res, next) => {
-  res.json('Apenas um teste!')
+  return res.json(flights)
 })
 
 flightsRouter.get('/:flightNumber', async (req, res, next) => {
