@@ -33,7 +33,6 @@ flightsRouter.post('/register', auth, async (req, res, next) => {
 })
 
 flightsRouter.get('/', async (req, res, next) => {
-  console.log('batendo na rota...')
   const flights = await prisma.flight.findMany()
 
   return res.json(flights)
