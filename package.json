@@ -2,7 +2,7 @@
   "name": "fake-flights-oracle-api",
   "version": "1.0.0",
   "description": "a fake flight oracle api for a blockchain proof of concept project.",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "dev": "node app.js"
