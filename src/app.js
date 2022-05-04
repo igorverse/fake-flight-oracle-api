@@ -1,10 +1,12 @@
 const express = require('express')
+const cors = require('cors')
 const flightsRouter = require('./routes/flights')
 const PORT = process.env.PORT || 4242
 
 const app = express()
 
 app.use(express.json())
+app.use(cors())
 
 app.use('/flights', flightsRouter)
 

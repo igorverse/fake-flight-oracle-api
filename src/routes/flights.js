@@ -1,11 +1,12 @@
 const express = require('express')
+const auth = require('../middlewares/auth')
 const { PrismaClient } = require('@prisma/client')
 
 const prisma = new PrismaClient()
 
 const flightsRouter = express.Router()
 
-flightsRouter.post('/register', async (req, res, next) => {
+flightsRouter.post('/register', auth, async (req, res, next) => {
   try {
     const { flightNumber, airlineCompany, email, departureDate, premium } =
       req.body
