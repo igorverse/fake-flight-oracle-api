@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-const flightsRouter = require('./routes/flights')
+const flightsRouter = require('./src/routes/flights')
 const PORT = process.env.PORT || 4242
 
 const app = express()
