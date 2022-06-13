@@ -11,10 +11,9 @@ datasource db {
 model Flight {
   flightnumber        Int     @id
   airlinecompany      String  @db.VarChar(255)
-  email               String  @unique @db.VarChar(255)
   departuredate       String  @db.VarChar(255)
-  premium             Int
-  payout              Int
+  premium             Float
+  payout              Float
   isdelayedorcanceled Boolean
 
   @@map("flight")

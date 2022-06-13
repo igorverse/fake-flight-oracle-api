@@ -8,14 +8,12 @@ const flightsRouter = express.Router()
 
 flightsRouter.post('/register', auth, async (req, res, next) => {
   try {
-    const { flightNumber, airlineCompany, email, departureDate, premium } =
-      req.body
+    const { flightNumber, airlineCompany, departureDate, premium } = req.body
 
     const flight = await prisma.flight.create({
       data: {
         flightnumber: flightNumber,
         airlinecompany: airlineCompany,
-        email: email,
         departuredate: departureDate,
         premium: premium,
         payout: premium + premium * 0.1,
